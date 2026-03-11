@@ -84,3 +84,62 @@ class Reviewer(Mentor):
         else:
             return 'Ошибка'
 
+def calc_average_grades_for_students(students, course):
+    total_grade = 0
+    count_grades = 0
+    for student in students:
+        grades = student.grades.get(course)
+        if grades:
+            total_grade += sum(grades)
+            count_grades += len(grades)
+    return total_grade / count_grades
+
+def calc_average_grades_for_lecturers(lecturers, course):
+    total_grade = 0
+    count_grades = 0
+    for lecturer in lecturers:
+        grades = lecturer.grades.get(course)
+        if grades:
+            total_grade += sum(grades)
+            count_grades += len(grades)
+    return total_grade / count_grades
+
+st1 = Student('Polina', 'Freigang', 'F')
+st2 = Student('Dima', 'Medvedev', 'M')
+rw1 = Reviewer('Victor', 'Popov')
+rw2 = Reviewer('Oksana', 'Borovina')
+lct1 = Lecturer('Tumur', 'Panov')
+lct2 = Lecturer('Anna', 'Mrazish')
+
+st1.courses_in_progress += ['Python', 'Java']
+st2.courses_in_progress += ['Python', 'C++']
+
+rw1.courses_attached += ['Python', 'Java']
+rw2.courses_attached += ['C++', 'Java']
+
+lct1.courses_attached += ['Python', 'Java']
+lct2.courses_attached += ['C++', 'Java', 'Python']
+
+rw1.rate_hw(st1, 'Python', 8)
+rw1.rate_hw(st1, 'Python', 5)
+rw1.rate_hw(st1, 'Python', 7)
+rw1.rate_hw(st2, 'Python', 10)
+rw1.rate_hw(st2, 'Python', 5)
+rw1.rate_hw(st2, 'C++', 5)
+rw1.rate_hw(st2, 'C++', 9)
+rw2.rate_hw(st1, 'Python', 7)
+rw2.rate_hw(st1, 'Java', 9)
+rw2.rate_hw(st1, 'Java', 8)
+
+st1.rate_lecture(lct1, 'Python', 6)
+st1.rate_lecture(lct1, 'Python', 5)
+st1.rate_lecture(lct2, 'Python', 4)
+st1.rate_lecture(lct2, 'Python', 4)
+st2.rate_lecture(lct2, 'C++', 5)
+st1.rate_lecture(lct2, 'Java', 4)
+st1.rate_lecture(lct2, 'Java', 5)
+
+print(calc_average_grades_for_students([st1, st2],'Python'))
+print(calc_average_grades_for_students([st1, st2],'Java'))
+print(calc_average_grades_for_lecturers([lct1, lct2],'Python'))
+print(calc_average_grades_for_lecturers([lct1, lct2],'Java'))
